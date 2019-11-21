@@ -6,13 +6,9 @@
                  "4", "5", "6", "*",
                  "1", "2", "3", "-",
                  "0", ".", "=", "+"], 
-    "buttonWidth" : 50,
-    "fontSize" : 30,
-    "buttonMargin" : 10,
-    "lineHeight" : 2.5,
-    "colorScheme" : {
-        "equals" : "#4285F4",
-        "numbers" : "#F1F3F4",
-        "operators" : "#DFE1E5"
-    }
+    "buttonWidth" : 100,
+    "fontSize" : 25,
+    "buttonMargin" : 8,
+    "lineHeight" : 1.8,
+    "borderRadius": 10
 }

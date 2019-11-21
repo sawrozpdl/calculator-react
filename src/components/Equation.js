@@ -1,6 +1,7 @@
 import Stack from "./Stack";
 
 class Equation {
+
   constructor(infix) {
     this.infix = infix;
     this.value = 0;
@@ -8,6 +9,7 @@ class Equation {
 
   setEquation(infix) {
     this.infix = infix;
+    return this;
   }
 
   toArray() {
@@ -35,7 +37,7 @@ class Equation {
     return 0; // so that operators accumulate on top of '(' successfully => priority less, appends stuff
   }
 
-  hasHigherPrecedence(first, second) { // push second if true
+  hasHigherPrecedence(first, second) { // push second if true 
     if (first === second && first === "^") return true; // exclusive case for ^
     return this.getPrecedence(first) > this.getPrecedence(second);
   }

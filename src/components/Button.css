@@ -1,4 +1,15 @@
 .button {
-
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  background : #DFE1E5;
 }
 
+.button:hover {
+  color: white;
+  background: #4285f4;
+}
+
+.operator {
+    background: #F1F3F4;
+}
