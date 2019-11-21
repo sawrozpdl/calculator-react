@@ -62,32 +62,29 @@ class Equation {
 
   getPostfixArray() {
     let infixArr = this.toArray();
-    let str = "";
+    let postfixArr = [];
     let stack = new Stack();
     infixArr.forEach(elem => {
-      let op = elem.charAt(0);
-      if (this.isNumber(op)) {
-        if (str === "") str = str + elem;
-        else str = str + " " + elem;
+      let sample = elem.charAt(0);
+      if (this.isNumber(sample)) {
+        postfixArr.push(elem);
       } else {
-        if (op === "(")
-          // just pushing ( to stack without any comparisons and stuffs
-          stack.push(op);
-        else if (op === ")") {
-          // popping out all operators inside ( )
-          while (!stack.isEmpty() && stack.peek() != "(")
-            str = str + " " + stack.pop();
+        if (sample === "(")
+          stack.push(sample); // just pushing ( to stack without any comparisons and stuffs
+        else if (sample === ")") {
+          while (!stack.isEmpty() && stack.peek() != "(") // popping out all operators inside ( )
+            postfixArr.push(stack.pop());
           stack.pop(); // since the above while doesn't get to ( so we pop it out
         } else {
-          if (stack.isEmpty() || this.hasHigherPrecedence(op, stack.peek()))
-            stack.push(op);
+          if (stack.isEmpty() || this.hasHigherPrecedence(sample, stack.peek()))
+            stack.push(sample);
           else {
             while (
               !stack.isEmpty() &&
-              this.getPrecedence(stack.peek()) >= this.getPrecedence(op) // has to keep the loop running till it we have - versus * where we leave - on the stack; ref-"a-b*c^d*k"
+              this.getPrecedence(stack.peek()) >= this.getPrecedence(sample) // has to keep the loop running till it we have - versus * where we leave - on the stack; ref-"a-b*c^d*k"
             )
-              str = str + " " + stack.pop();
-            stack.push(op); // same ref; we add * to the remaining - (which had less or equal precedence than *)
+              postfixArr.push(stack.pop());
+            stack.push(sample); // same ref; we add * to the remaining - (which had less or equal precedence than *)
           }
         }
       }
@@ -95,8 +92,8 @@ class Equation {
     while (
       !stack.isEmpty() // at last we pop all the operators in stack and append to final string
     )
-      str = str + " " + stack.pop();
-    return str.split(" ");
+      postfixArr.push(stack.pop());
+    return postfixArr;
   }
 
   evaluate() {

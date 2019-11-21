@@ -8,7 +8,6 @@ import "./App.css";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.prefixEquation = new Equation('');
     this.state = {
       equation: '',
       value: 0
@@ -19,8 +18,9 @@ class App extends React.Component {
   }
 
   handleEqualsClick() {
+    let result = new Equation(this.state.equation).evaluate().getValue();
     this.setState({
-      value: this.prefixEquation.setEquation(this.state.equation).evaluate().getValue()
+      value: (result.toString() === "NaN") ? "Syntax Error" : result
     });
   }
 
