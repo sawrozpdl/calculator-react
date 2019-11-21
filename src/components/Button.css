@@ -3,11 +3,13 @@
   text-align: center;
   cursor: pointer;
   background : #DFE1E5;
+  transition: 0.2s;
 }
 
 .button:hover {
   color: white;
   background: #4285f4;
+  transition: 0.3s;
 }
 
 .operator {

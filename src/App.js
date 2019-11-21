@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import Display from "./components/Display";
 import Button from "./components/Button";
 import Equation from "./components/Equation";
 import layout from "./layout.json";
 import "./App.css";
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.prefixEquation = new Equation('');
@@ -27,7 +27,8 @@ class App extends Component {
   render() {
     return (
       <div className="calculator" style = {{
-          width : this.appWidth
+          width : this.appWidth,
+          padding : this.layout.buttonMargin
         }}>
         <Display 
           equation={this.state.equation} 
@@ -35,12 +36,12 @@ class App extends Component {
           style = {{
             width : this.appWidth - (this.layout.buttonMargin * 2),
             height : this.layout.lineHeight * this.layout.fontSize * 2,
-            fontSize : this.layout.fontSize * 1.5,
+            fontSize : this.layout.fontSize * 1.3,
             borderRadius : this.layout.borderRadius,
             border : '2px solid grey',
             padding : '5px',
             boxSizing : 'border-box',
-            margin : 'auto'
+            margin : `${this.layout.buttonMargin}px auto`
           }}
           />
         {this.layout.buttons.map((span, index) => {
@@ -68,11 +69,9 @@ class App extends Component {
                   });
                   return;
                 }
-                if (isNaN(span)) {
-                  if (isNaN(this.state.equation.charAt(this.state.equation.length - 1))) {
-                    return;
-                  }
-                }
+                let peek = this.state.equation.charAt(this.state.equation.length - 1);
+                if (isNaN(span) && isNaN(peek) && span !== '(' && span !== ')' && peek !== '(' && peek !== ')') 
+                  return;
                 this.setState({
                   equation : this.state.equation + span
                 });

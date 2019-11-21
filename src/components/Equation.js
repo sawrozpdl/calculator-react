@@ -1,7 +1,6 @@
 import Stack from "./Stack";
 
 class Equation {
-
   constructor(infix) {
     this.infix = infix;
     this.value = 0;
@@ -15,6 +14,7 @@ class Equation {
   toArray() {
     return this.infix
       .replace(/\^/g, " ^ ") // (/^/g) ~ new RegExp("^", "g")
+      .replace(/\%/g, " % ")
       .replace(/\+/g, " + ")
       .replace(/\-/g, " - ")
       .replace(/\*/g, " * ")
@@ -33,21 +33,31 @@ class Equation {
   getPrecedence(item) {
     if (item === "-" || item === "+") return 1;
     if (item === "*" || item === "/") return 2;
-    if (item === "^") return 3;
+    if (item === "^" || item === "%") return 3;
     return 0; // so that operators accumulate on top of '(' successfully => priority less, appends stuff
   }
 
-  hasHigherPrecedence(first, second) { // push second if true 
+  hasHigherPrecedence(first, second) {
+    // push second if true
     if (first === second && first === "^") return true; // exclusive case for ^
     return this.getPrecedence(first) > this.getPrecedence(second);
   }
 
-  valueOf(after, before, operator) { // opposite due to pop pop
-    if (operator === "+") return before + after;
-    if (operator === "-") return before - after;
-    if (operator === "*") return before * after;
-    if (operator === "/") return before / after;
-    return Math.pow(before, after);
+  valueOf(after, before, operator) {
+    switch (operator) { // opposite due to pop pop
+      case "+":
+        return +before + +after;
+      case "-":
+        return before - after;
+      case "*":
+        return before * after;
+      case "/":
+        return before / after;
+      case "%":
+        return before % after;
+      default:
+        return before ^ after;
+    }
   }
 
   getPostfixArray() {
@@ -57,7 +67,7 @@ class Equation {
     infixArr.forEach(elem => {
       let op = elem.charAt(0);
       if (this.isNumber(op)) {
-        if (str === "") str = str + elem; 
+        if (str === "") str = str + elem;
         else str = str + " " + elem;
       } else {
         if (op === "(")
@@ -69,7 +79,6 @@ class Equation {
             str = str + " " + stack.pop();
           stack.pop(); // since the above while doesn't get to ( so we pop it out
         } else {
-          // ;
           if (stack.isEmpty() || this.hasHigherPrecedence(op, stack.peek()))
             stack.push(op);
           else {
